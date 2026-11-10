@@ -13,6 +13,7 @@ node default {
     'htop',
     'unzip',
     'ufw',
+    'docker.io',
     'nagios-nrpe-server',
     'monitoring-plugins'
   ]
@@ -44,6 +45,7 @@ node default {
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
+    require    => Package['docker.io'],
   }
 
   # 5. User Group Membership - ensure ubuntu is in docker group
