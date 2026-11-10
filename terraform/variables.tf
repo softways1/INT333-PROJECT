@@ -21,3 +21,9 @@ variable "key_name" {
   type        = string
   default     = "devops-key"
 }
+
+variable "ami_id" {
+  description = "Ubuntu 22.04 LTS AMI ID"
+  type        = string
+  default     = "ami-0c7217cdde317cfec"
+}
