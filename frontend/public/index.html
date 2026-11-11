@@ -3,73 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResumeAI • Intelligent Recruitment & DevOps Pipeline</title>
+  <title>Resume Screening & Evaluation Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script>
     tailwind.config = {
+      darkMode: 'media',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
           },
           colors: {
-            brand: {
-              orange: '#F26207',
-              coral: '#FF5C00',
-              amber: '#FF9900',
-              cyan: '#00D8F6',
-              green: '#00E599',
-              dark: '#0E1116',
-              surface: '#161B22',
-              card: '#1C2128',
-              border: '#2D333B',
-              borderMuted: '#22272E',
+            primary: {
+              DEFAULT: '#4F46E5',
+              hover: '#4338CA',
+              light: '#EEF2FF',
+              dark: '#312E81',
             }
+          },
+          boxShadow: {
+            subtle: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+            card: '0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06)',
           }
         }
       }
     }
   </script>
   <style>
-    /* Custom Replit-style subtle grid backdrop */
-    .replit-grid {
-      background-color: #0E1116;
-      background-image: radial-gradient(#24292F 1px, transparent 1px);
-      background-size: 24px 24px;
-    }
-    .replit-glow-orange {
-      box-shadow: 0 0 25px -4px rgba(242, 98, 7, 0.35);
-    }
-    .replit-glow-green {
-      box-shadow: 0 0 25px -4px rgba(0, 229, 153, 0.35);
-    }
-    /* Sleek custom scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #161B22;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #30363D;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #484F58;
+    * {
+      transition: background-color 180ms ease-out, border-color 180ms ease-out;
     }
   </style>
 </head>
-<body class="replit-grid text-[#E6EDF3] min-h-screen font-sans antialiased selection:bg-[#F26207] selection:text-white">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen font-sans antialiased">
   <div id="root"></div>
 
   <script type="text/babel">
@@ -81,16 +54,15 @@
       );
       const [apiHealth, setApiHealth] = useState({ status: 'CHECKING', mongoConnected: false });
       const [resumeText, setResumeText] = useState(
-        "Aman Kumar Singh\nDevOps & Full Stack Cloud Systems Engineer\nEmail: aman@devops.lpu.in | Phone: +91 98765 43210\n\nCore Competencies:\nTerraform, Puppet, Docker, Jenkins CI/CD, Kubernetes, AWS (EC2, VPC, IAM, Security Groups), Node.js, Express.js, ReactJS, MongoDB Atlas, Linux Administration, Nagios Core, Git, RESTful Microservices.\n\nProfessional Experience & Highlights:\n• Codified and provisioned reproducible cloud architecture on AWS using HashiCorp Terraform (VPC, Subnet, Route Tables, EC2).\n• Enforced deterministic system configuration baselines and security policies across target nodes via Puppet manifests.\n• Containerized multi-tier microservices into isolated Alpine Docker containers with optimized multi-stage builds.\n• Engineered automated CI/CD deployment pipelines using declarative Jenkinsfiles (Checkout -> Jest Test -> Docker Build -> Deploy).\n• Configured proactive 24/7 synthetic health monitoring and alerts using Nagios Core."
+        "Aman Kumar Singh\nCloud & DevOps Systems Engineer\nEmail: aman@devops.lpu.in\n\nCore Competencies:\nTerraform, Puppet, Docker, Jenkins CI/CD, Kubernetes, AWS (EC2, VPC, Security Groups, IAM), Node.js, Express, ReactJS, MongoDB Atlas, Linux Administration, Nagios Core, Git, RESTful Microservices.\n\nProfessional Experience:\n• Codified and provisioned reproducible cloud architecture on AWS using Terraform (VPC, Subnet, Route Tables, EC2).\n• Enforced deterministic system configuration baselines and security policies across target nodes via Puppet manifests.\n• Containerized multi-tier microservices into isolated Alpine Docker containers with optimized multi-stage builds.\n• Engineered automated CI/CD deployment pipelines using declarative Jenkinsfiles (Checkout -> Jest Test -> Docker Build -> Deploy).\n• Configured proactive 24/7 synthetic health monitoring and alerts using Nagios Core."
       );
       const [jobDescription, setJobDescription] = useState(
-        "We are looking for an experienced DevOps / Cloud Platform Engineer proficient in AWS, Terraform Infrastructure as Code, Docker microservices containerization, automated Jenkins CI/CD pipelines, and proactive infrastructure monitoring (Nagios/Prometheus). Practical experience with Node.js REST APIs and React full-stack architectures is a strong plus."
+        "We are seeking a DevOps / Cloud Platform Engineer proficient in AWS, Terraform Infrastructure as Code, Docker microservices containerization, automated Jenkins CI/CD pipelines, and proactive infrastructure monitoring (Nagios/Prometheus). Working knowledge of Node.js REST APIs and React full-stack architectures is preferred."
       );
       const [file, setFile] = useState(null);
       const [loading, setLoading] = useState(false);
       const [result, setResult] = useState(null);
       const [history, setHistory] = useState([]);
-      const [activeInputTab, setActiveInputTab] = useState('editor');
 
       useEffect(() => {
         checkHealth();
@@ -113,7 +85,7 @@
             setHistory(res.data.data);
           }
         } catch (err) {
-          console.warn('History notice:', err.message);
+          console.warn('History fetch notice:', err.message);
         }
       };
 
@@ -140,7 +112,7 @@
             fetchHistory();
           }
         } catch (err) {
-          alert('Analysis error: ' + (err.response?.data?.error || err.message));
+          alert('Evaluation error: ' + (err.response?.data?.error || err.message));
         } finally {
           setLoading(false);
         }
@@ -149,218 +121,170 @@
       return (
         <div class="min-h-screen flex flex-col">
           
-          {/* Top Bar (Replit / Linear Dark Studio Header) */}
-          <header class="bg-[#161B22]/90 backdrop-blur-md border-b border-[#30363D] sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div class="flex items-center justify-between h-14">
+          {/* Top Navigation */}
+          <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+              <div class="flex items-center justify-between h-16">
                 
-                {/* Brand / Logo */}
+                {/* Brand */}
                 <div class="flex items-center gap-3">
-                  <div class="h-8 w-8 rounded-md bg-gradient-to-tr from-[#F26207] to-[#FF9900] flex items-center justify-center text-white font-mono font-bold text-base shadow-sm">
-                    <i class="fa-solid fa-bolt-lightning text-xs"></i>
+                  <div class="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
                   </div>
-                  <div class="flex items-center gap-2">
-                    <span class="font-bold tracking-tight text-white text-base">
-                      ResumeAI
+                  <div>
+                    <span class="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+                      Resume Intelligence
                     </span>
-                    <span class="text-xs px-2 py-0.5 rounded-full bg-[#21262D] text-[#8B949E] border border-[#30363D] font-mono">
-                      studio v2.4
+                    <span class="text-xs text-slate-500 dark:text-slate-400 ml-2 hidden sm:inline">
+                      INT333 DevOps
                     </span>
                   </div>
-                  <span class="text-[#484F58] hidden md:inline">/</span>
-                  <span class="text-xs text-[#8B949E] hidden md:inline font-mono">
-                    INT333 • Enterprise DevOps Pipeline
-                  </span>
                 </div>
 
-                {/* Status Badges & Student Badge */}
-                <div class="flex items-center gap-3">
-                  {/* API Status Badge */}
-                  <div class="flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#0E1116] border border-[#30363D] text-xs font-mono">
-                    <span class={`h-2 w-2 rounded-full ${apiHealth.status === 'UP' ? 'bg-[#00E599] animate-pulse' : 'bg-rose-500'}`}></span>
-                    <span class="text-[#8B949E]">api:</span>
-                    <span class={apiHealth.status === 'UP' ? 'text-[#00E599] font-semibold' : 'text-rose-400'}>
-                      {apiHealth.status}
-                    </span>
+                {/* Telemetry & Candidate Details */}
+                <div class="flex items-center gap-2.5 sm:gap-3 text-xs">
+                  
+                  {/* API Status */}
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                    <span class={`h-1.5 w-1.5 rounded-full ${apiHealth.status === 'UP' ? 'bg-emerald-500' : 'bg-rose-500'}`}></span>
+                    <span class="font-medium">API: {apiHealth.status}</span>
                   </div>
 
-                  {/* MongoDB Atlas Badge */}
-                  <div class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#0E1116] border border-[#30363D] text-xs font-mono">
-                    <i class="fa-solid fa-database text-[#00D8F6] text-[11px]"></i>
-                    <span class="text-[#8B949E]">mongo:</span>
-                    <span class={`font-semibold ${apiHealth.mongoConnected ? 'text-[#00E599]' : 'text-[#FF9900]'}`}>
-                      {apiHealth.mongoConnected ? 'atlas_online' : 'standby'}
-                    </span>
+                  {/* Database Status */}
+                  <div class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                    <span class={`h-1.5 w-1.5 rounded-full ${apiHealth.mongoConnected ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
+                    <span class="font-medium">MongoDB: {apiHealth.mongoConnected ? 'Connected' : 'Standby'}</span>
                   </div>
 
-                  {/* Candidate Identity */}
-                  <div class="flex items-center gap-2.5 pl-3 border-l border-[#30363D]">
-                    <div class="h-7 w-7 rounded-full bg-[#F26207]/20 border border-[#F26207]/50 text-[#F26207] flex items-center justify-center font-bold text-xs font-mono">
-                      AK
-                    </div>
-                    <div class="hidden lg:block text-left">
-                      <div class="text-xs font-semibold text-white leading-tight">Aman Kumar Singh</div>
-                      <div class="text-[10px] text-[#8B949E] font-mono">Roll: 02 | Reg: 12301704</div>
-                    </div>
+                  {/* Author Meta */}
+                  <div class="pl-2 border-l border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-right hidden sm:block">
+                    <div class="font-medium text-slate-900 dark:text-slate-100">Aman Kumar Singh</div>
+                    <div class="text-[11px]">Reg: 12301704 • Roll 2</div>
                   </div>
+
                 </div>
 
               </div>
             </div>
           </header>
 
-          {/* DevOps Toolchain Status Ribbon */}
-          <div class="bg-[#0E1116] border-b border-[#21262D] px-4 py-2 text-xs">
-            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-              <div class="flex items-center gap-2 text-[#8B949E] font-mono">
-                <i class="fa-solid fa-terminal text-[#F26207] text-[11px]"></i>
-                <span>Active DevOps Toolchain:</span>
-              </div>
-              <div class="flex flex-wrap items-center gap-2.5 text-xs font-mono">
-                <span class="px-2 py-0.5 rounded bg-[#161B22] border border-[#30363D] text-[#A5D6FF] flex items-center gap-1.5">
-                  <i class="fa-solid fa-cube text-[10px] text-[#00D8F6]"></i> Terraform
-                </span>
-                <span class="px-2 py-0.5 rounded bg-[#161B22] border border-[#30363D] text-[#FFA657] flex items-center gap-1.5">
-                  <i class="fa-solid fa-wrench text-[10px] text-[#FF9900]"></i> Puppet
-                </span>
-                <span class="px-2 py-0.5 rounded bg-[#161B22] border border-[#30363D] text-[#79C0FF] flex items-center gap-1.5">
-                  <i class="fa-brands fa-docker text-[11px] text-[#388BFD]"></i> Docker
-                </span>
-                <span class="px-2 py-0.5 rounded bg-[#161B22] border border-[#30363D] text-[#FF7B72] flex items-center gap-1.5">
-                  <i class="fa-brands fa-jenkins text-[11px] text-[#F85149]"></i> Jenkins
-                </span>
-                <span class="px-2 py-0.5 rounded bg-[#161B22] border border-[#30363D] text-[#7EE787] flex items-center gap-1.5">
-                  <i class="fa-solid fa-heart-pulse text-[10px] text-[#00E599]"></i> Nagios
-                </span>
+          {/* Sub-Header: Managed Stack */}
+          <div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-2">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+              <span class="font-medium">Infrastructure Stack</span>
+              <div class="flex items-center gap-3">
+                <span>Terraform</span>
+                <span class="text-slate-300 dark:text-slate-700">•</span>
+                <span>Puppet</span>
+                <span class="text-slate-300 dark:text-slate-700">•</span>
+                <span>Docker</span>
+                <span class="text-slate-300 dark:text-slate-700">•</span>
+                <span>Jenkins</span>
+                <span class="text-slate-300 dark:text-slate-700">•</span>
+                <span>Nagios</span>
               </div>
             </div>
           </div>
 
-          {/* Main Studio Workspace */}
-          <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 flex-1">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Main Layout */}
+          <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 flex-1">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
-              {/* Left Column: Input Panel (IDE Workspace feel) */}
-              <div class="lg:col-span-5 space-y-4">
-                <div class="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden shadow-xl">
-                  
-                  {/* Pane Header with Workspace Tabs */}
-                  <div class="bg-[#0E1116] px-4 py-2.5 border-b border-[#30363D] flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                      <span class="h-2.5 w-2.5 rounded-full bg-[#FF5F56]"></span>
-                      <span class="h-2.5 w-2.5 rounded-full bg-[#FFBD2E]"></span>
-                      <span class="h-2.5 w-2.5 rounded-full bg-[#27C93F]"></span>
-                      <span class="ml-2 font-mono text-xs font-semibold text-[#C9D1D9]">
-                        candidate_input.json
-                      </span>
-                    </div>
-                    <div class="flex items-center gap-1 bg-[#161B22] p-0.5 rounded border border-[#30363D] text-[11px] font-mono">
-                      <button
-                        type="button"
-                        onClick={() => setActiveInputTab('editor')}
-                        class={`px-2 py-0.5 rounded transition ${activeInputTab === 'editor' ? 'bg-[#30363D] text-white font-semibold' : 'text-[#8B949E] hover:text-white'}`}
-                      >
-                        Text Editor
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setActiveInputTab('upload')}
-                        class={`px-2 py-0.5 rounded transition ${activeInputTab === 'upload' ? 'bg-[#30363D] text-white font-semibold' : 'text-[#8B949E] hover:text-white'}`}
-                      >
-                        PDF Upload
-                      </button>
-                    </div>
+              {/* Left Column: Intake Form */}
+              <div class="lg:col-span-5 space-y-6">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-card">
+                  <div class="border-b border-slate-100 dark:border-slate-800 pb-4 mb-5 text-left">
+                    <h2 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+                      Candidate Intake & Requirements
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                      Upload a PDF resume or provide profile text to compute contextual compatibility against target requisites.
+                    </p>
                   </div>
 
-                  <form onSubmit={handleAnalyze} class="p-5 space-y-5">
+                  <form onSubmit={handleAnalyze} class="space-y-5 text-left">
                     
-                    {/* Mode 1: PDF Dropzone */}
-                    {activeInputTab === 'upload' && (
-                      <div>
-                        <label class="block text-xs font-mono uppercase text-[#8B949E] mb-2 tracking-wider">
-                          Attach Candidate Resume (PDF)
-                        </label>
-                        <div class="border-2 border-dashed border-[#30363D] hover:border-[#F26207] bg-[#0E1116] hover:bg-[#161B22] rounded-xl p-6 text-center cursor-pointer transition-all group">
-                          <input
-                            type="file"
-                            accept=".pdf"
-                            id="fileInput"
-                            class="hidden"
-                            onChange={(e) => setFile(e.target.files[0])}
-                          />
-                          <label htmlFor="fileInput" class="cursor-pointer block">
-                            <div class="h-10 w-10 mx-auto rounded-lg bg-[#21262D] group-hover:bg-[#F26207]/20 text-[#8B949E] group-hover:text-[#F26207] flex items-center justify-center transition mb-3">
-                              <i class="fa-solid fa-file-arrow-up text-lg"></i>
-                            </div>
-                            <p class="text-xs font-semibold text-white">
-                              {file ? file.name : 'Click to browse or drop resume PDF'}
-                            </p>
-                            <p class="text-[11px] text-[#8B949E] mt-1 font-mono">
-                              {file ? `${(file.size / 1024).toFixed(1)} KB` : 'Supports standard binary PDF (Max 5MB)'}
-                            </p>
-                          </label>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Mode 2: Code/Textarea Input */}
-                    {activeInputTab === 'editor' && (
-                      <div>
-                        <div class="flex justify-between items-center mb-1.5 font-mono text-xs">
-                          <label class="text-[#8B949E] uppercase tracking-wider">
-                            Resume Plaintext Buffer
-                          </label>
-                          {file && (
-                            <span class="text-[#FF9900]">
-                              (PDF attached: text overridden)
-                            </span>
-                          )}
-                        </div>
-                        <div class="relative rounded-lg border border-[#30363D] bg-[#0E1116] overflow-hidden focus-within:border-[#F26207] transition">
-                          <textarea
-                            rows="7"
-                            disabled={!!file}
-                            value={resumeText}
-                            onChange={(e) => setResumeText(e.target.value)}
-                            class="w-full bg-transparent p-3 text-xs text-[#E6EDF3] font-mono focus:outline-none disabled:opacity-40 leading-relaxed"
-                            placeholder="// Paste technical resume content here..."
-                          ></textarea>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Target Job Specification Input */}
+                    {/* File Attachment */}
                     <div>
-                      <label class="block text-xs font-mono uppercase text-[#8B949E] mb-1.5 tracking-wider">
-                        Target Job Description / Requisites
+                      <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                        Resume Document (PDF)
                       </label>
-                      <div class="relative rounded-lg border border-[#30363D] bg-[#0E1116] overflow-hidden focus-within:border-[#F26207] transition">
-                        <textarea
-                          rows="4"
-                          value={jobDescription}
-                          onChange={(e) => setJobDescription(e.target.value)}
-                          class="w-full bg-transparent p-3 text-xs text-[#E6EDF3] font-mono focus:outline-none leading-relaxed"
-                          placeholder="// Paste target role qualifications..."
-                        ></textarea>
+                      <div class="border border-dashed border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 rounded-lg p-4 text-center cursor-pointer bg-slate-50/50 dark:bg-slate-950/40 transition">
+                        <input
+                          type="file"
+                          accept=".pdf"
+                          id="fileInput"
+                          class="hidden"
+                          onChange={(e) => setFile(e.target.files[0])}
+                        />
+                        <label htmlFor="fileInput" class="cursor-pointer block">
+                          <svg class="w-6 h-6 mx-auto text-slate-400 dark:text-slate-500 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                          <span class="text-xs font-medium text-slate-900 dark:text-slate-200 block">
+                            {file ? file.name : 'Select PDF resume'}
+                          </span>
+                          <span class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 block">
+                            {file ? `${(file.size / 1024).toFixed(1)} KB` : 'Maximum file size 5MB'}
+                          </span>
+                        </label>
                       </div>
                     </div>
 
-                    {/* Signature Replit-Orange Action Button */}
+                    {/* Resume Plain Text */}
+                    <div>
+                      <div class="flex justify-between items-center mb-1.5">
+                        <label class="text-xs font-medium text-slate-700 dark:text-slate-300">
+                          Resume Profile Text
+                        </label>
+                        {file && (
+                          <span class="text-[11px] text-amber-600 dark:text-amber-400">
+                            PDF selected
+                          </span>
+                        )}
+                      </div>
+                      <textarea
+                        rows="6"
+                        disabled={!!file}
+                        value={resumeText}
+                        onChange={(e) => setResumeText(e.target.value)}
+                        class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-3 text-xs text-slate-800 dark:text-slate-200 font-sans focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:text-slate-400 leading-relaxed"
+                        placeholder="Paste resume text if document is unavailable..."
+                      ></textarea>
+                    </div>
+
+                    {/* Job Description */}
+                    <div>
+                      <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                        Target Job Description
+                      </label>
+                      <textarea
+                        rows="4"
+                        value={jobDescription}
+                        onChange={(e) => setJobDescription(e.target.value)}
+                        class="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-3 text-xs text-slate-800 dark:text-slate-200 font-sans focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 leading-relaxed"
+                        placeholder="Paste target job responsibilities and technical requirements..."
+                      ></textarea>
+                    </div>
+
+                    {/* Primary Button */}
                     <button
                       type="submit"
                       disabled={loading}
-                      class="w-full bg-[#F26207] hover:bg-[#FF7315] active:bg-[#D95304] text-white font-semibold py-3 px-4 rounded-lg replit-glow-orange transition-all flex items-center justify-center gap-2.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                      class="w-full bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2.5 px-4 rounded-lg shadow-subtle transition flex items-center justify-center gap-2 text-xs disabled:opacity-50 cursor-pointer"
                     >
                       {loading ? (
                         <>
-                          <i class="fa-solid fa-spinner fa-spin text-sm"></i>
-                          <span class="font-mono text-xs">Evaluating via Gemini 1.5 Flash...</span>
+                          <svg class="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                          </svg>
+                          <span>Processing Evaluation with Gemini AI...</span>
                         </>
                       ) : (
-                        <>
-                          <i class="fa-solid fa-microchip text-sm"></i>
-                          <span>Run AI Semantic Match</span>
-                        </>
+                        <span>Evaluate Candidate Compatibility</span>
                       )}
                     </button>
 
@@ -368,202 +292,179 @@
                 </div>
               </div>
 
-              {/* Right Column: AI Output Studio */}
-              <div class="lg:col-span-7 space-y-4">
+              {/* Right Column: Evaluation Results */}
+              <div class="lg:col-span-7 space-y-6 text-left">
                 {result ? (
-                  <div class="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden shadow-xl">
+                  <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-card space-y-6">
                     
-                    {/* Header Banner: Compatibility Metric */}
-                    <div class="bg-gradient-to-r from-[#1C2128] via-[#161B22] to-[#1C2128] p-6 border-b border-[#30363D]">
-                      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#0E1116] border border-[#30363D] text-[11px] font-mono text-[#00E599] mb-2">
-                            <span class="h-1.5 w-1.5 rounded-full bg-[#00E599] animate-pulse"></span>
-                            AI_ANALYSIS_SUCCESS
-                          </div>
-                          <h3 class="text-xl font-bold text-white tracking-tight">
-                            {result.candidateName}
-                          </h3>
-                          <p class="text-xs text-[#8B949E] font-mono mt-0.5">
-                            {result.email} • {result.targetJobRole || 'DevOps Platform Engineer'}
-                          </p>
-                        </div>
-
-                        {/* Radial Gauge / High-Tech Score */}
-                        <div class="flex items-center gap-4 bg-[#0E1116] border border-[#30363D] px-4 py-3 rounded-xl shadow-inner">
-                          <div class="text-right">
-                            <div class="text-[10px] uppercase font-mono tracking-wider text-[#8B949E]">
-                              Fit Score
-                            </div>
-                            <div class="text-xs font-bold text-[#00E599]">
-                              {result.matchScore >= 80 ? 'Optimal Candidate' : result.matchScore >= 60 ? 'Competent Match' : 'Gap Detected'}
-                            </div>
-                          </div>
-                          <div class="h-14 w-14 rounded-full border-2 border-[#00E599] flex items-center justify-center bg-[#00E599]/10 replit-glow-green font-mono font-extrabold text-xl text-[#00E599]">
-                            {result.matchScore}%
-                          </div>
-                        </div>
+                    {/* Candidate & Score Summary */}
+                    <div class="flex flex-col sm:flex-row sm:items-start justify-between pb-6 border-b border-slate-100 dark:border-slate-800 gap-4">
+                      <div>
+                        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 mb-1.5">
+                          Evaluation Report
+                        </span>
+                        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100 tracking-tight">
+                          {result.candidateName}
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                          {result.email} • {result.targetJobRole || 'DevOps Platform Engineer'}
+                        </p>
                       </div>
 
-                      {/* Precision Progress Bar */}
-                      <div class="mt-4 w-full bg-[#0E1116] rounded-full h-1.5 border border-[#30363D] overflow-hidden">
+                      {/* Score Indicator */}
+                      <div class="sm:text-right">
+                        <div class="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+                          {result.matchScore}%
+                        </div>
+                        <span class="inline-block mt-0.5 text-[11px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                          {result.matchScore >= 80 ? 'High Compatibility' : result.matchScore >= 60 ? 'Moderate Fit' : 'Requires Review'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div>
+                      <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
                         <div
-                          class="h-full bg-gradient-to-r from-[#F26207] via-[#00D8F6] to-[#00E599] rounded-full transition-all duration-1000"
+                          class="h-1.5 bg-indigo-600 rounded-full transition-all duration-300"
                           style={{ width: `${result.matchScore}%` }}
                         ></div>
                       </div>
                     </div>
 
-                    <div class="p-6 space-y-6">
-                      
-                      {/* Technical Skills Extracted */}
-                      <div>
-                        <div class="flex items-center justify-between mb-2.5">
-                          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-[#8B949E] flex items-center gap-2">
-                            <i class="fa-solid fa-code text-[#00D8F6]"></i>
-                            Extracted Technical Entities ({result.extractedSkills?.length || 0})
-                          </h4>
-                          <span class="text-[11px] font-mono text-[#8B949E]">
-                            Confidence: 0.96
+                    {/* Extracted Skills */}
+                    <div>
+                      <h4 class="text-xs font-semibold tracking-tight text-slate-900 dark:text-slate-100 mb-2.5">
+                        Technical Skills Identified ({result.extractedSkills?.length || 0})
+                      </h4>
+                      <div class="flex flex-wrap gap-1.5">
+                        {result.extractedSkills?.map((skill, idx) => (
+                          <span
+                            key={idx}
+                            class="inline-block px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/60"
+                          >
+                            {skill}
                           </span>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                          {result.extractedSkills?.map((skill, idx) => (
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Key Strengths */}
+                    <div>
+                      <h4 class="text-xs font-semibold tracking-tight text-slate-900 dark:text-slate-100 mb-2.5">
+                        Candidate Strengths & Qualification Alignment
+                      </h4>
+                      <div class="space-y-2">
+                        {result.strengths?.map((str, idx) => (
+                          <div
+                            key={idx}
+                            class="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-950/50 p-3 rounded-lg border border-slate-200/60 dark:border-slate-800"
+                          >
+                            <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="leading-relaxed">{str}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Identified Skill Gaps */}
+                    {result.missingSkills && result.missingSkills.length > 0 && (
+                      <div>
+                        <h4 class="text-xs font-semibold tracking-tight text-slate-900 dark:text-slate-100 mb-2.5">
+                          Identified Competency Gaps
+                        </h4>
+                        <div class="flex flex-wrap gap-1.5">
+                          {result.missingSkills.map((gap, idx) => (
                             <span
                               key={idx}
-                              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-xs font-mono text-[#C9D1D9] transition-colors"
+                              class="inline-block px-2.5 py-1 rounded-md text-xs font-medium bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60"
                             >
-                              <span class="h-1.5 w-1.5 rounded-full bg-[#00D8F6]"></span>
-                              {skill}
+                              {gap}
                             </span>
                           ))}
                         </div>
                       </div>
+                    )}
 
-                      {/* Candidate Key Strengths */}
-                      <div>
-                        <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-[#00E599] mb-2.5 flex items-center gap-2">
-                          <i class="fa-solid fa-circle-check"></i>
-                          Demonstrated Strengths & Alignment
-                        </h4>
-                        <div class="space-y-2">
-                          {result.strengths?.map((str, idx) => (
-                            <div
-                              key={idx}
-                              class="flex items-start gap-2.5 p-3 rounded-lg bg-[#0E1116] border border-[#21262D] text-xs text-[#C9D1D9] leading-relaxed"
-                            >
-                              <i class="fa-solid fa-check text-[#00E599] mt-0.5"></i>
-                              <span>{str}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Skill Gap Analysis */}
-                      {result.missingSkills && result.missingSkills.length > 0 && (
-                        <div>
-                          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-[#FF9900] mb-2.5 flex items-center gap-2">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            Identified Skill Gaps
-                          </h4>
-                          <div class="flex flex-wrap gap-2">
-                            {result.missingSkills.map((gap, idx) => (
-                              <span
-                                key={idx}
-                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#FF9900]/10 border border-[#FF9900]/30 text-xs font-mono text-[#FFA657]"
-                              >
-                                <i class="fa-solid fa-minus text-[10px]"></i>
-                                {gap}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Gemini LLM Recruiter Feedback */}
-                      <div class="p-4 rounded-lg bg-[#0E1116] border border-[#30363D] relative">
-                        <div class="flex items-center gap-2 mb-1.5 text-xs font-mono font-semibold text-[#8B949E]">
-                          <i class="fa-solid fa-brain text-[#F26207]"></i>
-                          <span>Google Gemini 1.5 Flash Evaluation:</span>
-                        </div>
-                        <p class="text-xs text-[#C9D1D9] font-sans leading-relaxed">
-                          {result.recommendations}
-                        </p>
-                      </div>
-
+                    {/* Recruiter Evaluation Summary */}
+                    <div class="bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800 rounded-lg p-4">
+                      <h4 class="text-xs font-semibold tracking-tight text-slate-900 dark:text-slate-100 mb-1.5">
+                        Evaluation Assessment
+                      </h4>
+                      <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {result.recommendations}
+                      </p>
                     </div>
+
                   </div>
                 ) : (
-                  /* Empty State: Replit Studio Console */
-                  <div class="bg-[#161B22] border border-[#30363D] rounded-xl p-12 text-center shadow-xl flex flex-col items-center justify-center min-h-[460px]">
-                    <div class="h-16 w-16 rounded-2xl bg-[#0E1116] border border-[#30363D] flex items-center justify-center text-[#8B949E] mb-4">
-                      <i class="fa-solid fa-terminal text-2xl text-[#F26207]"></i>
+                  /* Idle State */
+                  <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-12 text-center shadow-card flex flex-col items-center justify-center min-h-[440px]">
+                    <div class="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-3.5">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
                     </div>
-                    <h3 class="text-base font-bold text-white mb-1">
-                      AI Screening Console Idle
+                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-1">
+                      No Evaluation Active
                     </h3>
-                    <p class="text-xs text-[#8B949E] max-w-sm mb-6 leading-relaxed">
-                      Select candidate profile parameters on the left and trigger the Gemini LLM engine to extract structured match insights and audit to MongoDB Atlas.
+                    <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm leading-relaxed">
+                      Configure candidate input on the left and submit to generate a structured evaluation using the Google Gemini LLM engine.
                     </p>
-                    <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-[#8B949E]">
-                      <span class="flex items-center gap-1.5">
-                        <span class="h-1.5 w-1.5 rounded-full bg-[#00E599]"></span> Microservices Active
-                      </span>
-                      <span>•</span>
-                      <span class="flex items-center gap-1.5">
-                        <span class="h-1.5 w-1.5 rounded-full bg-[#00D8F6]"></span> Gemini 1.5 Ready
-                      </span>
-                    </div>
                   </div>
                 )}
               </div>
 
             </div>
 
-            {/* Candidate Audit History (Sleek Replit / GitHub Style Data Table) */}
+            {/* Historical Records Table */}
             {history.length > 0 && (
-              <div class="mt-8 bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden shadow-xl">
-                <div class="px-5 py-3.5 bg-[#0E1116] border-b border-[#30363D] flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left text-[#00D8F6] text-xs"></i>
-                    <h3 class="text-xs font-mono font-semibold uppercase text-white">
-                      MongoDB Persistent Audit Log
+              <div class="mt-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-card overflow-hidden text-left">
+                <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                  <div>
+                    <h3 class="text-xs font-semibold tracking-tight text-slate-900 dark:text-slate-100 uppercase">
+                      Evaluation History
                     </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      Persisted records retrieved from MongoDB Atlas cluster.
+                    </p>
                   </div>
-                  <span class="text-[11px] font-mono text-[#8B949E]">
-                    {history.length} records retrieved
+                  <span class="text-xs text-slate-500 dark:text-slate-400">
+                    {history.length} records
                   </span>
                 </div>
 
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs font-mono text-[#C9D1D9]">
-                    <thead class="bg-[#161B22] text-[#8B949E] text-[11px] border-b border-[#30363D] uppercase">
+                  <table class="w-full text-left text-xs text-slate-600 dark:text-slate-400">
+                    <thead class="bg-slate-50 dark:bg-slate-950/60 text-slate-500 dark:text-slate-400 text-[11px] font-semibold border-b border-slate-200 dark:border-slate-800">
                       <tr>
-                        <th class="py-3 px-5">Candidate</th>
-                        <th class="py-3 px-5">Target Role</th>
-                        <th class="py-3 px-5">Score</th>
-                        <th class="py-3 px-5">Skills Sample</th>
-                        <th class="py-3 px-5 text-right">Timestamp</th>
+                        <th class="py-3 px-6">Candidate</th>
+                        <th class="py-3 px-6">Role</th>
+                        <th class="py-3 px-6">Match Score</th>
+                        <th class="py-3 px-6">Key Skills</th>
+                        <th class="py-3 px-6 text-right">Timestamp</th>
                       </tr>
                     </thead>
-                    <tbody class="divide-y divide-[#21262D]">
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                       {history.map((item, idx) => (
-                        <tr key={idx} class="hover:bg-[#1C2128] transition-colors">
-                          <td class="py-3 px-5 font-semibold text-white">
+                        <tr key={idx} class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
+                          <td class="py-3.5 px-6 font-medium text-slate-900 dark:text-slate-100">
                             {item.candidateName}
                           </td>
-                          <td class="py-3 px-5 text-[#8B949E]">
+                          <td class="py-3.5 px-6">
                             {item.targetJobRole}
                           </td>
-                          <td class="py-3 px-5">
-                            <span class={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${item.matchScore >= 80 ? 'bg-[#00E599]/15 text-[#00E599] border border-[#00E599]/30' : 'bg-[#FF9900]/15 text-[#FF9900] border border-[#FF9900]/30'}`}>
+                          <td class="py-3.5 px-6">
+                            <span class="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100">
                               {item.matchScore}%
                             </span>
                           </td>
-                          <td class="py-3 px-5 text-[#8B949E] max-w-xs truncate">
+                          <td class="py-3.5 px-6 text-slate-500 dark:text-slate-400 max-w-xs truncate">
                             {item.extractedSkills?.slice(0, 4).join(', ') || 'N/A'}
                           </td>
-                          <td class="py-3 px-5 text-right text-[#8B949E] text-[11px]">
+                          <td class="py-3.5 px-6 text-right text-slate-400 dark:text-slate-500 text-[11px]">
                             {new Date(item.createdAt).toLocaleTimeString()}
                           </td>
                         </tr>
@@ -575,14 +476,16 @@
             )}
           </main>
 
-          {/* Minimal Dark Studio Footer */}
-          <footer class="bg-[#0E1116] border-t border-[#21262D] py-4 mt-8 text-center text-xs font-mono text-[#8B949E]">
-            <p>
-              ResumeAI Studio • Automated DevOps Pipeline (INT333) • Lovely Professional University
-            </p>
-            <p class="text-[#484F58] mt-1 text-[11px]">
-              Developed by Aman Kumar Singh (Reg: 12301704) • Terraform | Puppet | Docker | Jenkins | Nagios
-            </p>
+          {/* Clean Minimalist Footer */}
+          <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 mt-12 text-xs text-slate-500 dark:text-slate-400">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-left">
+              <span>
+                AI Powered Resume Analyzer • Automated DevOps Pipeline (INT333)
+              </span>
+              <span>
+                Department of Computer Science & Engineering • Lovely Professional University
+              </span>
+            </div>
           </footer>
 
         </div>
