@@ -500,31 +500,22 @@ doc.add_paragraph().paragraph_format.space_after = Pt(8)
 
 add_heading_2("3.3 Data Flow Diagram (DFD Level 0 & Level 1)")
 add_body_p(
-    'The operational data flow of the proposed architecture is modeled using multi-level Data Flow Diagrams. '
-    'Level 0 (Context Diagram) illustrates the high-level boundary between external entities and the automated system. '
-    'Level 1 decomposes the system into discrete processing entities: PDF text extraction, Google Gemini semantic scoring, '
-    'MongoDB persistence, and Nagios telemetry inspection.'
+    'The operational data flow of the proposed architecture is modeled using formal multi-level Data Flow Diagrams. '
+    'Level 0 (Context Diagram) illustrates the high-level boundary between external entities (Candidate, Recruiter, DevOps Engineer, '
+    'and Nagios Daemon) and the central automated system. Level 1 decomposes the system into discrete processing entities: '
+    'PDF text extraction, Google Gemini semantic scoring, MongoDB persistence, Jenkins automated builds, and Nagios telemetry inspection.'
 )
 
-add_callout_box(
-    "DFD Level 0 (Context Diagram):\n"
-    "[Candidate/Recruiter] ---> (Upload Resume PDF & Job Description) ---> [AI Resume Analyzer Platform]\n"
-    "[AI Resume Analyzer Platform] ---> (Match Score %, Extracted Skills, AI Feedback) ---> [Candidate/Recruiter]\n"
-    "[DevOps Engineer] ---> (Commit Source Code) ---> [Jenkins CI/CD Engine] ---> [AWS EC2 Container Production Server]\n"
-    "[Nagios Monitoring Daemon] <--- (Polls ICMP & HTTP /health Endpoints) <--- [AWS EC2 Production Server]",
-    "SYSTEM DATA FLOW LEVEL 0"
+add_image_figure(
+    "diagram_dfd_level_0.png",
+    "Figure 3.1: Data Flow Diagram (DFD) - Level 0: Context Level System Boundary Diagram",
+    width=Inches(6.0)
 )
 
-add_callout_box(
-    "DFD Level 1 (Decomposed Data Flow Diagram):\n"
-    "1.0 Candidate Intake -> (Multipart PDF Stream) -> Process 1.1: Multer Document Extraction\n"
-    "1.1 Multer Extraction -> (Raw Text Buffer) -> Process 1.2: Semantic Scoring via Gemini LLM\n"
-    "1.2 Gemini Engine -> (Structured JSON Evaluation) -> Process 1.3: MongoDB Atlas Persistence (Store D1)\n"
-    "1.3 MongoDB Store -> (Historical Records Query) -> Process 1.4: React Dashboard Visualization\n"
-    "2.0 Git Commit Event -> Process 2.1: Jenkins SCM Checkout -> Process 2.2: Jest Unit Verification\n"
-    "2.2 Test Verification -> Process 2.3: Docker Image Build -> Process 2.4: Container Launch via Compose\n"
-    "3.0 Nagios Scheduler -> Process 3.1: NRPE Plugin Execution -> Process 3.2: Status Evaluation (OK/WARN/CRIT)",
-    "SYSTEM DATA FLOW LEVEL 1"
+add_image_figure(
+    "diagram_dfd_level_1.png",
+    "Figure 3.2: Data Flow Diagram (DFD) - Level 1: Decomposed Process and Data Flow Architecture",
+    width=Inches(6.0)
 )
 
 add_heading_2("3.4 What's New in the System to be Developed")
@@ -617,31 +608,14 @@ add_heading_1("6. DESIGN")
 add_heading_2("6.1 High-Level Architectural Pipeline Design")
 add_body_p(
     'The system follows a resilient, decoupled architecture spanning cloud infrastructure, configuration management, '
-    'containerized application runtime, automated delivery, and synthetic monitoring. The diagram below illustrates the '
-    'declarative interaction across the entire lifecycle.'
+    'containerized application runtime, automated delivery, and synthetic monitoring. The visual topology below illustrates '
+    'the end-to-end continuous integration and delivery lifecycle.'
 )
 
-add_callout_box(
-    "ARCHITECTURE WORKFLOW (Mermaid Graph Representation):\n"
-    "[Developer Workstation] ---> (Git Push Code / Manifests) ---> [GitHub Repository]\n"
-    "           |\n"
-    "           v (Automated Webhook / Poll)\n"
-    "[Jenkins CI/CD Engine] ---> Stage 1: Checkout SCM\n"
-    "                       ---> Stage 2: Automated Jest Unit Tests\n"
-    "                       ---> Stage 3: Docker Microservice Image Assembly\n"
-    "                       ---> Stage 4: Docker Compose Blue/Green Deployment\n"
-    "                       ---> Stage 5: Production Health Endpoint Validation\n"
-    "           |\n"
-    "           v (Deploys Runtime)\n"
-    "[AWS EC2 Instance (Ubuntu 24.04)] <=== Provisioned via [Terraform IaC (VPC/SG)]\n"
-    "           |                      <=== Hardened via    [Puppet Manifest (site.pp)]\n"
-    "           +---> [Container 1: ReactJS Frontend (Nginx Port 80)]\n"
-    "           +---> [Container 2: Node.js Gemini REST API (Port 5000)]\n"
-    "           +---> [Container 3: MongoDB Document Store (Port 27017)]\n"
-    "           |\n"
-    "           v (Continuous Synthetic Inspection)\n"
-    "[Nagios Core 4 Daemon] ---> Active Checks: ICMP Ping, CPU Load, Root Disk, HTTP Endpoints",
-    "ENTERPRISE DEVOPS PIPELINE TOPOLOGY"
+add_image_figure(
+    "diagram_architecture_pipeline.png",
+    "Figure 6.1: High-Level DevOps Lifecycle & Resilient Infrastructure Pipeline Architecture",
+    width=Inches(6.0)
 )
 
 add_heading_2("6.2 Semantic Evaluation Pseudocode")
@@ -772,9 +746,17 @@ add_body_p(
     'to generate a candidate compatibility score (e.g. 88%), extract technical skill tags, highlight strengths, identify skill gaps, '
     'and persist records into MongoDB Atlas.'
 )
+
+add_image_figure(
+    "Screenshot 2026-11-10 231406.png",
+    "Figure 8.5 (a): Live AI Resume Analyzer Candidate Intake Workspace (PDF Dropzone & Job Specification)",
+    width=Inches(5.8)
+)
+
 add_image_figure(
     "Screenshot 2026-11-10 231500.png",
-    "Figure 8.5: Live AI Powered Resume Analyzer Dashboard with Compatibility Score and Gemini AI Evaluation"
+    "Figure 8.5 (b): Live AI Resume Analyzer Candidate Compatibility Score Gauge & Gemini AI Evaluation Report",
+    width=Inches(5.8)
 )
 
 add_heading_2("8.6 Tool 6: Jenkins Automated Continuous Integration & Delivery")
@@ -1076,9 +1058,15 @@ add_bullet("MongoDB Inc. (2026). The MongoDB Manual. Available: https://www.mong
 add_bullet("Google Cloud. (2026). Google Generative AI SDK Documentation (Gemini 1.5 Flash). Available: https://ai.google.dev/", "[7] ")
 add_bullet("Lovely Professional University. (2026). Academic Guidelines for Capstone DevOps Projects (INT333), Phagwara, Punjab.", "[8] ")
 
-doc.save(OUTPUT_DOCX_PATH)
-# Also copy to Screenshots directory so user has it everywhere
-import shutil
-shutil.copy2(OUTPUT_DOCX_PATH, os.path.join(SCREENSHOTS_DIR, "AI_Resume_Analyzer_Project_Report_INT333.docx"))
+try:
+    doc.save(OUTPUT_DOCX_PATH)
+    import shutil
+    shutil.copy2(OUTPUT_DOCX_PATH, os.path.join(SCREENSHOTS_DIR, "AI_Resume_Analyzer_Project_Report_INT333.docx"))
+    print(f"Report successfully generated at: {OUTPUT_DOCX_PATH}")
+except Exception as e:
+    alt_path = r"c:\Users\AMAN KUMAR SINGH\Desktop\INT333 PROJECT\AI_Resume_Analyzer_Project_Report_INT333_Official.docx"
+    doc.save(alt_path)
+    import shutil
+    shutil.copy2(alt_path, os.path.join(SCREENSHOTS_DIR, "AI_Resume_Analyzer_Project_Report_INT333_Official.docx"))
+    print(f"Report saved at alternate path due to open file lock: {alt_path}")
 
-print(f"Report successfully generated at: {OUTPUT_DOCX_PATH}")
